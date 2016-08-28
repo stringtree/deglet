@@ -61,7 +61,7 @@ Deglet.prototype.normalise = function normalise() {
   this.normalise_day();
 }
 
-Deglet.prototype.plus = function plus(n, unit) {
+Deglet.prototype.alter = function alter(n, unit, name) {
   switch(unit) {
   case 'day':
     return new Deglet(this.year,this.month,this.day + n);
@@ -70,19 +70,14 @@ Deglet.prototype.plus = function plus(n, unit) {
   case 'year':
     return new Deglet(this.year + n,this.month,this.day);
   default:
-    throw new Error('Deglet.plus: unknown unit type "' + unit + '"');
+    throw new Error('Deglet.' + (name || 'alter') + ': unknown unit type "' + unit + '"');
   }
 };
 
+Deglet.prototype.plus = function plus(n, unit) {
+  return this.alter(n, unit, 'plus');
+};
+
 Deglet.prototype.minus = function minus(n, unit) {
-  switch(unit) {
-  case 'day':
-    return new Deglet(this.year,this.month,this.day - n);
-  case 'month':
-    return new Deglet(this.year,this.month - n,this.day);
-  case 'year':
-    return new Deglet(this.year - n,this.month,this.day);
-  default:
-    throw new Error('Deglet.minus: unknown unit type "' + unit + '"');
-  }
+  return this.alter(-n, unit, 'minus');
 };
