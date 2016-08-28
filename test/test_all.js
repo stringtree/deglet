@@ -1,10 +1,11 @@
 var Hath = require('hath');
+var util = require('util');
 
 var deglet = require('../');
 var d;
 
 function testSimpleCases(t, done) {
-  d = deglet.createFromArgs(2016,8,27) 
+  d = deglet.createFromArgs(2016,8,27);
   t.assert(2016 === d.year);
   t.assert(8 === d.month);
   t.assert(27 === d.day);
@@ -42,8 +43,19 @@ function testSimpleCases(t, done) {
   done(); 
 }
 
+function testMonthClipping(t, done) {
+  d = deglet.createFromArgs(2016,8,31);
+  d = d.plus(1, 'month');
+  t.assert(2016 === d.year);
+  t.assert(10 === d.month);
+  t.assert(1 === d.day);
+
+  done();
+}
+
 module.exports = Hath.suite('Deglet', [
-  testSimpleCases
+  testSimpleCases,
+  testMonthClipping
 ]);
 
 if (module === require.main) {
