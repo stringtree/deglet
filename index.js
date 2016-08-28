@@ -75,7 +75,7 @@ Deglet.prototype.plus = function plus(n, unit) {
 };
 
 Deglet.prototype.minus = function minus(n, unit) {
-  switch(units) {
+  switch(unit) {
   case 'day':
     return new Deglet(this.year,this.month,this.day - n);
   case 'month':

@@ -8,21 +8,36 @@ function testSimpleCases(t, done) {
   t.assert(2016 === d.year);
   t.assert(8 === d.month);
   t.assert(27 === d.day);
-  
+
   d = d.plus(1, 'day');
   t.assert(2016 === d.year);
   t.assert(8 === d.month);
   t.assert(28 === d.day);
-  
+
   d = d.plus(2, 'month');
   t.assert(2016 === d.year);
   t.assert(10 === d.month);
   t.assert(28 === d.day);
-  
+
   d = d.plus(4, 'year');
   t.assert(2020 === d.year);
   t.assert(10 === d.month);
   t.assert(28 === d.day);
+
+  d = d.minus(1, 'year');
+  t.assert(2019 === d.year);
+  t.assert(10 === d.month);
+  t.assert(28 === d.day);
+
+  d = d.minus(4, 'month');
+  t.assert(2019 === d.year);
+  t.assert(6 === d.month);
+  t.assert(28 === d.day);
+
+  d = d.minus(12, 'day');
+  t.assert(2019 === d.year);
+  t.assert(6 === d.month);
+  t.assert(16 === d.day);
 
   done(); 
 }
