@@ -1,7 +1,7 @@
 var util = require('util');
 
 function Deglet(year, month, day) {
-  this.internal = { year: year-1, month: month-1, day: day-1 }
+  this.internal = { year: year, month: month-1, day: day-1 }
   this.normalise();
 }
 
@@ -26,8 +26,8 @@ const leap_years = [
 
 function ndays(year, month) {
   switch (month) {
-  case 2:
-    return -1 === leap_years.indexOf(year) ? 29 : 28
+  case 1: // February where January := 0
+    return -1 === leap_years.indexOf(year) ? 28 : 29;
   default:
     return days_in_month[month];
   }
@@ -58,7 +58,7 @@ function normalise_day(fields) {
 }
 
 function expand(d) {
-  d.year = d.internal.year + 1;
+  d.year = d.internal.year;
   d.month = d.internal.month + 1;
   d.day = d.internal.day + 1;
 }

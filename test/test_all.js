@@ -83,6 +83,26 @@ function testRollForwardToNextYear(t, done) {
   done();
 }
 
+function testMinusOverLeapYear(t, done) {
+  d = deglet.createFromArgs(2016,3,15);
+  d = d.minus(15, 'day');
+  t.assert(2016 === d.year);
+  t.assert(2 === d.month);
+  t.assert(29 === d.day);
+
+  done();
+}
+
+function testPlusOverLeapYear(t, done) {
+  d = deglet.createFromArgs(2016,2,15);
+  d = d.plus(15, 'day');
+  t.assert(2016 === d.year);
+  t.assert(3 === d.month);
+  t.assert(1 === d.day);
+
+  done();
+}
+
 function testMonthClipping(t, done) {
   d = deglet.createFromArgs(2016,8,31);
   d = d.plus(1, 'month');
@@ -99,7 +119,11 @@ module.exports = Hath.suite('Deglet', [
   testRollForwardToNextMonth,
   testRollBackToPreviousYear,
   testRollForwardToNextYear,
-  testMonthClipping
+  testMinusOverLeapYear,
+  testPlusOverLeapYear,
+  testMonthClipping,
+  //TODO testToISOString
+  //TODO testCreateFromISOString
 ]);
 
 if (module === require.main) {
