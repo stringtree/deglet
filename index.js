@@ -69,24 +69,44 @@ Deglet.prototype.normalise = function normalise() {
   expand(this)
 }
 
-Deglet.prototype.alter = function alter(n, unit, name) {
+function alter(d, n, unit, name) {
   switch(unit) {
   case 'day':
-    return new Deglet(this.year,this.month,this.day + n);
+    return new Deglet(d.year,d.month,d.day + n);
   case 'month':
-    return new Deglet(this.year,this.month+n,this.day);
+    return new Deglet(d.year,d.month+n,d.day);
   case 'year':
-    return new Deglet(this.year + n,this.month,this.day);
+    return new Deglet(d.year + n,d.month,d.day);
   default:
     throw new Error('Deglet.' + (name || 'alter') + ': unknown unit type "' + unit + '"');
   }
 };
 
 Deglet.prototype.plus = function plus(n, unit) {
-  var ret = this.alter(n, unit, 'plus');
+  var ret = alter(this, n, unit, 'plus');
   return ret;
 };
 
 Deglet.prototype.minus = function minus(n, unit) {
-  return this.alter(-n, unit, 'minus');
+  return alter(this, -n, unit, 'minus');
+};
+
+Deglet.prototype.isSame = function isSame(d) {
+  return this.year === d.year && this.month === d.month && this.day === d.day;
+};
+
+Deglet.prototype.isSameOrAfter = function isSameOrAfter(d) {
+  return this.year >= d.year && this.month >= d.month && this.day >= d.day;
+};
+
+Deglet.prototype.isSameOrBefore = function isSameOrBefore(d) {
+  return this.year <= d.year && this.month <= d.month && this.day <= d.day;
+};
+
+Deglet.prototype.isAfter = function isAfter(d) {
+  return this.year > d.year || this.year === d.year && (this.month > d.month || this.month === d.month && this.day > d.day);
+};
+
+Deglet.prototype.isBefore = function isBefore(d) {
+  return this.year < d.year || this.year === d.year && (this.month < d.month || this.month === d.month && this.day < d.day);
 };

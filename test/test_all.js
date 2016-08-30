@@ -2,7 +2,7 @@ var Hath = require('hath');
 var util = require('util');
 
 var deglet = require('../');
-var d;
+var d, d1, d2;
 
 function testSimpleCases(t, done) {
   d = deglet.createFromArgs(2016,8,27);
@@ -83,7 +83,7 @@ function testRollForwardToNextYear(t, done) {
   done();
 }
 
-function testMinusOverLeapYear(t, done) {
+function testMinusDaysOverLeapYear(t, done) {
   d = deglet.createFromArgs(2016,3,15);
   d = d.minus(15, 'day');
   t.assert(2016 === d.year);
@@ -93,7 +93,7 @@ function testMinusOverLeapYear(t, done) {
   done();
 }
 
-function testPlusOverLeapYear(t, done) {
+function testPlusDaysOverLeapYear(t, done) {
   d = deglet.createFromArgs(2016,2,15);
   d = d.plus(15, 'day');
   t.assert(2016 === d.year);
@@ -113,15 +113,36 @@ function testMonthClipping(t, done) {
   done();
 }
 
+function testDateComparisonSame(t, done) {
+    d1 = deglet.createFromArgs(2016,8,31);
+    d2 = deglet.createFromArgs(2016,8,31);
+    t.assert(d1.isSame(d2));
+    t.assert(d2.isSame(d1));
+    t.assert(d1.isSameOrAfter(d2));
+    t.assert(d2.isSameOrAfter(d1));
+    t.assert(d1.isSameOrBefore(d2));
+    t.assert(d2.isSameOrBefore(d1));
+    t.assert(! d1.isAfter(d2));
+    t.assert(! d2.isAfter(d1));
+    t.assert(! d1.isBefore(d2));
+    t.assert(! d2.isBefore(d1));
+    done();
+}
+
 module.exports = Hath.suite('Deglet', [
   testSimpleCases,
   testRollBackToPreviousMonth,
   testRollForwardToNextMonth,
   testRollBackToPreviousYear,
   testRollForwardToNextYear,
-  testMinusOverLeapYear,
-  testPlusOverLeapYear,
+  testMinusDaysOverLeapYear,
+  testPlusDaysOverLeapYear,
   testMonthClipping,
+  testDateComparisonSame,
+//  testDateComparisonSimpleBefore,
+//  testDateComparisonSimpleAfter,
+//  testDateComparisonComplexBefore,
+//  testDateComparisonComplexAfter
   //TODO testToISOString
   //TODO testCreateFromISOString
 ]);
