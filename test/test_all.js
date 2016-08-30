@@ -19,6 +19,16 @@ function testIsLeapYear(t, done) {
 }
 
 function testDaysInYear(t, done) {
+    t.assert(366 === deglet.daysInYear(1996)), '1996';
+    t.assert(366 === deglet.daysInYear(2000), '2000');
+    t.assert(365 === deglet.daysInYear(1900), '1900');
+    t.assert(365 === deglet.daysInYear(2001), '2001');
+
+    d = deglet.createFromArgs(2016,8,27);
+    t.assert(366 === d.daysInYear(), 'this(2016)');
+    t.assert(366 === d.daysInYear(2000), 'this(2000)');
+    t.assert(365 === d.daysInYear(2001), 'this(2001)');
+
     done();
 }
 
@@ -209,7 +219,7 @@ function testDaysBetween(t, done) {
 
 module.exports = Hath.suite('Deglet', [
   testIsLeapYear,
-//  testDaysInYear,
+  testDaysInYear,
 //  testDaysInMonth,
   testSimpleCases,
   testRollBackToPreviousMonth,
