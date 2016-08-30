@@ -13,6 +13,23 @@ module.exports.createFromObject = function createFromObject(object) {
   return new Deglet(object.year, object.month, object.day); 
 };
 
+module.exports.daysBetween = function daysBetween(d1, d2) {
+    if (d1.isSame(d2)) return 0;
+    var sign = 1;
+    if (d1.isBefore(d2)) {
+        x = d1;
+        d1 = d2;
+        d2 = x;
+        sign = -1;
+    }
+
+    var total = 0;
+
+    //TODO pick apart the differences and multiply by lengths
+
+    return sign * total;
+}
+
 const days_in_month = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 const leap_years = [
   1904, 1908, 1912, 1916, 1920, 1924, 1928, 1932, 1936, 1940, 1944, 1948,

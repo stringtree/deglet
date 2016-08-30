@@ -103,6 +103,8 @@ function testPlusDaysOverLeapYear(t, done) {
   done();
 }
 
+//TODO should this roll over to next month, or clip to end of desired month?
+// different languages and libraries have different policies
 function testMonthClipping(t, done) {
   d = deglet.createFromArgs(2016,8,31);
   d = d.plus(1, 'month');
@@ -175,6 +177,13 @@ function testDateComparisonComplexAfter(t, done) {
     done();
 }
 
+function testDaysBetween(t, done) {
+    d1 = deglet.createFromArgs(2016,8,31);
+    d2 = deglet.createFromArgs(2016,8,31);
+    t.assert(0 === deglet.daysBetween(d1, d2));
+    done();
+}
+
 module.exports = Hath.suite('Deglet', [
   testSimpleCases,
   testRollBackToPreviousMonth,
@@ -188,9 +197,9 @@ module.exports = Hath.suite('Deglet', [
   testDateComparisonSimpleBefore,
   testDateComparisonSimpleAfter,
   testDateComparisonComplexBefore,
-  testDateComparisonComplexAfter
-  //TODO testDaysBetween
-  //TODO testToISOString
+  testDateComparisonComplexAfter,
+  testDaysBetween,
+  //TODO testToISOString,
   //TODO testCreateFromISOString
 ]);
 
