@@ -129,6 +129,52 @@ function testDateComparisonSame(t, done) {
     done();
 }
 
+function testDateComparisonSimpleBefore(t, done) {
+    t.assert(deglet.createFromArgs(2016,8,30).isBefore(deglet.createFromArgs(2016,8,31)));
+    t.assert(!deglet.createFromArgs(2016,8,31).isBefore(deglet.createFromArgs(2016,8,30)));
+
+    t.assert(deglet.createFromArgs(2016,7,30).isBefore(deglet.createFromArgs(2016,8,30)));
+    t.assert(!deglet.createFromArgs(2016,8,30).isBefore(deglet.createFromArgs(2016,7,30)));
+
+    t.assert(deglet.createFromArgs(2015,8,30).isBefore(deglet.createFromArgs(2016,8,30)));
+    t.assert(!deglet.createFromArgs(2016,8,30).isBefore(deglet.createFromArgs(2015,8,30)));
+
+    done();
+}
+
+function testDateComparisonSimpleAfter(t, done) {
+    t.assert(!deglet.createFromArgs(2016,8,30).isAfter(deglet.createFromArgs(2016,8,31)));
+    t.assert(deglet.createFromArgs(2016,8,31).isAfter(deglet.createFromArgs(2016,8,30)));
+
+    t.assert(!deglet.createFromArgs(2016,7,30).isAfter(deglet.createFromArgs(2016,8,30)));
+    t.assert(deglet.createFromArgs(2016,8,30).isAfter(deglet.createFromArgs(2016,7,30)));
+
+    t.assert(!deglet.createFromArgs(2015,8,30).isAfter(deglet.createFromArgs(2016,8,30)));
+    t.assert(deglet.createFromArgs(2016,8,30).isAfter(deglet.createFromArgs(2015,8,30)));
+
+    done();
+}
+
+function testDateComparisonComplexBefore(t, done) {
+    t.assert(deglet.createFromArgs(2016,7,31).isBefore(deglet.createFromArgs(2016,8,30)));
+    t.assert(!deglet.createFromArgs(2016,8,30).isBefore(deglet.createFromArgs(2016,7,31)));
+
+    t.assert(deglet.createFromArgs(2015,8,31).isBefore(deglet.createFromArgs(2016,7,30)));
+    t.assert(!deglet.createFromArgs(2016,7,30).isBefore(deglet.createFromArgs(2015,8,31)));
+
+    done();
+}
+
+function testDateComparisonComplexAfter(t, done) {
+    t.assert(!deglet.createFromArgs(2016,7,31).isAfter(deglet.createFromArgs(2016,8,30)));
+    t.assert(deglet.createFromArgs(2016,8,30).isAfter(deglet.createFromArgs(2016,7,31)));
+
+    t.assert(!deglet.createFromArgs(2015,8,31).isAfter(deglet.createFromArgs(2016,7,30)));
+    t.assert(deglet.createFromArgs(2016,7,30).isAfter(deglet.createFromArgs(2015,8,31)));
+
+    done();
+}
+
 module.exports = Hath.suite('Deglet', [
   testSimpleCases,
   testRollBackToPreviousMonth,
@@ -139,10 +185,11 @@ module.exports = Hath.suite('Deglet', [
   testPlusDaysOverLeapYear,
   testMonthClipping,
   testDateComparisonSame,
-  //TODO testDateComparisonSimpleBefore,
-  //TODO testDateComparisonSimpleAfter,
-  //TODO testDateComparisonComplexBefore,
-  //TODO testDateComparisonComplexAfter
+  testDateComparisonSimpleBefore,
+  testDateComparisonSimpleAfter,
+  testDateComparisonComplexBefore,
+  testDateComparisonComplexAfter
+  //TODO testDaysBetween
   //TODO testToISOString
   //TODO testCreateFromISOString
 ]);
