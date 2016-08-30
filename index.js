@@ -39,14 +39,37 @@ const leap_years = [
   2052, 2056, 2060, 2064, 2068, 2072, 2076, 2080, 2084, 2088, 2092, 2096.
 ];
 
-function ndays(year, month) {
+function leap(year) {
+    return leap_years.indexOf(year) != -1;
+}
+module.exports.isLeapYear = leap;
+
+function mdays(year, month) {
   switch (month) {
   case 1: // February where January := 0
-    return -1 === leap_years.indexOf(year) ? 28 : 29;
+    return -1 === leap(year) ? 28 : 29;
   default:
     return days_in_month[month];
   }
 }
+module.exports.daysInMonth = mdays;
+
+function ydays(year) {
+    return leap(year) ? 366 : 365;
+}
+module.exports.daysInYear = ydays;
+
+Deglet.prototype.daysInMonth = function daysInMonth(year, month) {
+    return mdays(year || this.internal.year, month ? month-1 : this.internal.month);
+};
+
+Deglet.prototype.daysInYear = function daysInYear(year) {
+    return ydays(year || this.internal.year);
+};
+
+Deglet.prototype.isLeapYear = function isLeapYear(year) {
+    return leap(year || this.internal.year);
+};
 
 function normalise_month(fields) {
   while (fields.month < 0) {
@@ -63,10 +86,10 @@ function normalise_day(fields) {
   while (fields.day < 0) {
     --fields.month;
     normalise_month(fields);
-    fields.day += ndays(fields.year, fields.month);
+    fields.day += mdays(fields.year, fields.month);
   }
-  while (fields.day >= ndays(fields.year, fields.month)) {
-    fields.day -= ndays(fields.year, fields.month);
+  while (fields.day >= mdays(fields.year, fields.month)) {
+    fields.day -= mdays(fields.year, fields.month);
     ++fields.month;
     normalise_month(fields);
   }

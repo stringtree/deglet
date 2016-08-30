@@ -4,6 +4,29 @@ var util = require('util');
 var deglet = require('../');
 var d, d1, d2;
 
+function testIsLeapYear(t, done) {
+    t.assert(deglet.isLeapYear(1996)), '1996';
+    t.assert(deglet.isLeapYear(2000), '2000');
+    t.assert(!deglet.isLeapYear(1900), '1900');
+    t.assert(!deglet.isLeapYear(2001), '2001');
+
+    d = deglet.createFromArgs(2016,8,27);
+    t.assert(d.isLeapYear(), 'this(2016)');
+    t.assert(d.isLeapYear(2000), 'this(2000)');
+    t.assert(!d.isLeapYear(2001), 'this(2001)');
+
+    done();
+}
+
+function testDaysInYear(t, done) {
+    done();
+}
+
+function testDaysInMonth(t, done) {
+    done();
+}
+
+
 function testSimpleCases(t, done) {
   d = deglet.createFromArgs(2016,8,27);
   t.assert(2016 === d.year);
@@ -185,6 +208,9 @@ function testDaysBetween(t, done) {
 }
 
 module.exports = Hath.suite('Deglet', [
+  testIsLeapYear,
+//  testDaysInYear,
+//  testDaysInMonth,
   testSimpleCases,
   testRollBackToPreviousMonth,
   testRollForwardToNextMonth,
