@@ -139,10 +139,10 @@ module.exports = Hath.suite('Deglet', [
   testPlusDaysOverLeapYear,
   testMonthClipping,
   testDateComparisonSame,
-//  testDateComparisonSimpleBefore,
-//  testDateComparisonSimpleAfter,
-//  testDateComparisonComplexBefore,
-//  testDateComparisonComplexAfter
+  //TODO testDateComparisonSimpleBefore,
+  //TODO testDateComparisonSimpleAfter,
+  //TODO testDateComparisonComplexBefore,
+  //TODO testDateComparisonComplexAfter
   //TODO testToISOString
   //TODO testCreateFromISOString
 ]);
