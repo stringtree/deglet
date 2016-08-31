@@ -19,7 +19,7 @@ function testIsLeapYear(t, done) {
 }
 
 function testDaysInYear(t, done) {
-    t.assert(366 === deglet.daysInYear(1996)), '1996';
+    t.assert(366 === deglet.daysInYear(1996), '1996');
     t.assert(366 === deglet.daysInYear(2000), '2000');
     t.assert(365 === deglet.daysInYear(1900), '1900');
     t.assert(365 === deglet.daysInYear(2001), '2001');
@@ -33,7 +33,16 @@ function testDaysInYear(t, done) {
 }
 
 function testDaysInMonth(t, done) {
-    done();
+    t.assert(31 === deglet.daysInMonth(1996, 1), '1996-01');
+    t.assert(29 === deglet.daysInMonth(1996, 2), '1996-02');
+    t.assert(28 === deglet.daysInMonth(2001, 2), '2001-02');
+
+    d = deglet.createFromArgs(2016,2,15);
+    t.assert(29 === d.daysInMonth(), 'this(2016-02)');
+    t.assert(28 === d.daysInMonth(2001), 'this(2001-)');
+    t.assert(31 === d.daysInMonth(undefined,8), 'this(-08)');
+
+    done()
 }
 
 
@@ -220,7 +229,7 @@ function testDaysBetween(t, done) {
 module.exports = Hath.suite('Deglet', [
   testIsLeapYear,
   testDaysInYear,
-//  testDaysInMonth,
+  testDaysInMonth,
   testSimpleCases,
   testRollBackToPreviousMonth,
   testRollForwardToNextMonth,
@@ -235,6 +244,7 @@ module.exports = Hath.suite('Deglet', [
   testDateComparisonComplexBefore,
   testDateComparisonComplexAfter,
   testDaysBetween,
+
   //TODO testToISOString,
   //TODO testCreateFromISOString
 ]);

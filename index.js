@@ -38,6 +38,8 @@ const leap_years = [
   2004, 2008, 2012, 2016, 2020, 2024, 2028, 2032, 2036, 2040, 2044, 2048,
   2052, 2056, 2060, 2064, 2068, 2072, 2076, 2080, 2084, 2088, 2092, 2096.
 ];
+const range = { minimum: 1900, maximum: 2100 };
+module.exports.range = range;
 
 function leap(year) {
     return leap_years.indexOf(year) != -1;
@@ -45,22 +47,19 @@ function leap(year) {
 module.exports.isLeapYear = leap;
 
 function mdays(year, month) {
-  switch (month) {
-  case 1: // February where January := 0
-    return -1 === leap(year) ? 28 : 29;
-  default:
-    return days_in_month[month];
-  }
+  return (month !== 1) ? days_in_month[month] : (leap(year) ? 29 : 28)
 }
-module.exports.daysInMonth = mdays;
+module.exports.daysInMonth = function(year,month) {
+  return mdays(year,month-1);
+};
 
 function ydays(year) {
-    return leap(year) ? 366 : 365;
+  return leap(year) ? 366 : 365;
 }
 module.exports.daysInYear = ydays;
 
 Deglet.prototype.daysInMonth = function daysInMonth(year, month) {
-    return mdays(year || this.internal.year, month ? month-1 : this.internal.month);
+  return mdays(year || this.internal.year, month ? month-1 : this.internal.month);
 };
 
 Deglet.prototype.daysInYear = function daysInYear(year) {
