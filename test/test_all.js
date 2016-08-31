@@ -45,6 +45,31 @@ function testDaysInMonth(t, done) {
     done()
 }
 
+function testValidate(t,done) {
+    t.assert(deglet.isValid('2016-08-30'),'2016-08-30');
+    t.assert(deglet.isValid('2016-02-29'),'2016-02-29');
+    t.assert(deglet.isValid('1900-01-01'),'1900-01-01');
+    t.assert(deglet.isValid('2099-12-31'),'2099-12-31');
+
+    t.assert(!deglet.isValid('2016-09-31'),'2016-09-31');
+    t.assert(!deglet.isValid('2015-02-29'),'2015-02-29');
+    t.assert(!deglet.isValid('2015-00-29'),'2015-00-29');
+    t.assert(!deglet.isValid('2015-13-29'),'2015-13-29');
+    t.assert(!deglet.isValid('2101-01-01'),'2101-01-01');
+    t.assert(!deglet.isValid('1899-12-31'),'1899-12-31');
+
+    t.assert(!deglet.isValid('16-08-30'),'2016-08-30');
+    t.assert(!deglet.isValid('30-08-2016'),'30-08-2016');
+    t.assert(!deglet.isValid('30-08-16'),'30-08-16');
+
+    t.assert(!deglet.isValid('2016-08-30a'),'2016-08-30a');
+    t.assert(!deglet.isValid('YYYY-MM-dd'),'YYYY-MM-dd');
+    t.assert(!deglet.isValid(''),'');
+    t.assert(!deglet.isValid(null),'null');
+    t.assert(!deglet.isValid(undefined),'undefined');
+
+    done()
+}
 
 function testSimpleCases(t, done) {
   d = deglet.createFromArgs(2016,8,27);
@@ -230,6 +255,7 @@ module.exports = Hath.suite('Deglet', [
   testIsLeapYear,
   testDaysInYear,
   testDaysInMonth,
+  testValidate,
   testSimpleCases,
   testRollBackToPreviousMonth,
   testRollForwardToNextMonth,
