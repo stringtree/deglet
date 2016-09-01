@@ -244,10 +244,38 @@ function testDateComparisonComplexAfter(t, done) {
     done();
 }
 
+function testCreateFromISOString(t, done) {
+    t.assert(deglet.createFromArgs(2016,08,30), deglet.createFromISOString('2016-08-30'));
+    done();
+}
+
+function testToISOString(t, done) {
+    t.assert('2016-08-30' === deglet.createFromArgs(2016,08,30).toISOString());
+    done();
+}
+
+function between(s1, s2) {
+    return deglet.daysBetween(deglet.createFromISOString(s1), deglet.createFromISOString(s2));
+}
+
 function testDaysBetween(t, done) {
     d1 = deglet.createFromArgs(2016,8,31);
     d2 = deglet.createFromArgs(2016,8,31);
     t.assert(0 === deglet.daysBetween(d1, d2));
+
+    function assert(n, s1, s2) {
+        var ret = deglet.daysBetween(deglet.createFromISOString(s1), deglet.createFromISOString(s2));
+        t.assert(n === ret, s2 + '-' + s1 + ' should be ' + n + ' days but was ' + ret);
+    }
+
+    assert(0, '1961-07-24', '1961-07-24');
+    assert(1, '1961-07-24', '1961-07-25');
+    assert(-1, '1961-07-25', '1961-07-24');
+    assert(365, '1961-07-24', '1962-07-24');
+    assert(30, '1961-02-02', '1961-03-04');
+    assert(31, '1960-02-02', '1960-03-04');
+    assert(-31, '1960-03-04', '1960-02-02');
+    
     done();
 }
 
@@ -271,8 +299,9 @@ module.exports = Hath.suite('Deglet', [
   testDateComparisonComplexAfter,
   testDaysBetween,
 
-  //TODO testToISOString,
-  //TODO testCreateFromISOString
+  testToISOString,
+  testCreateFromISOString,
+  //TODO toRomanYear
 ]);
 
 if (module === require.main) {

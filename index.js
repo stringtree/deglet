@@ -1,6 +1,8 @@
 var util = require('util');
 
 const days_in_month = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+const cumulative_days = [0,31,59,90,120,151,181,212,243,273,304,334];
+
 const leap_years = [
   1904, 1908, 1912, 1916, 1920, 1924, 1928, 1932, 1936, 1940, 1944, 1948,
   1952, 1956, 1960, 1964, 1968, 1972, 1976, 1980, 1984, 1988, 1992, 1996,
@@ -12,7 +14,7 @@ const range = { minimum: 1900, maximum: 2100 };
 module.exports.range = range;
 
 function leap(year) {
-    return leap_years.indexOf(year) != -1;
+  return leap_years.indexOf(year) != -1;
 }
 module.exports.isLeapYear = leap;
 
@@ -21,7 +23,7 @@ function mdays(year, month) {
 }
 
 function daysInMonth(year,month) {
-    return mdays(year,month-1);
+  return mdays(year,month-1);
 }
 module.exports.daysInMonth = daysInMonth;
 
@@ -29,6 +31,12 @@ function ydays(year) {
   return leap(year) ? 366 : 365;
 }
 module.exports.daysInYear = ydays;
+
+function diy(year, month, day) {
+  var ret = cumulative_days[month-1] + day-1;
+  if (leap(year)) ret += 1;
+  return ret;
+}
 
 function valid(year, month, day) {
   return year >= range.minimum && year <= range.maximum &&
@@ -47,21 +55,53 @@ function isValid(s) {
 }
 module.exports.isValid = isValid;
 
-module.exports.daysBetween = function daysBetween(d1, d2) {
-    if (d1.isSame(d2)) return 0;
-    var sign = 1;
-    if (d1.isBefore(d2)) {
-        x = d1;
-        d1 = d2;
-        d2 = x;
-        sign = -1;
+function two(n) {
+  return (n < 10 ? '0' : '') + n;
+}
+
+function toString(year,month,day) {
+  return year + '-' + two(month) + '-' + two(day);
+}
+module.exports.toISOString = toString;
+
+Deglet.prototype.toISOString = function toISOString() {
+  return toString(this.year,this.month,this.day);
+}
+
+module.exports.daysBetween = function daysBetween(a, b) {
+  if (a.isSame(b)) return 0;
+  var sign;
+  var start;
+  var end;
+  if (a.isBefore(b)) {
+    start = a;
+    end = b;
+    sign = 1;
+  } else {
+    start = b;
+    end = a;
+    sign = -1;
+  }
+
+  var total = 0;
+
+  if (end.year > start.year) {
+    total += ydays(start.year) - diy(start.year,start.month,start.day);
+    for (var i = start.year+1; i < end.year; ++i) {
+      total += ydays(i);
     }
+    total += diy(end.year, end.month, end.day);
+  } else if (end.month > start.month) {
+    total += daysInMonth(start.year, start.month) - start.day;
+    for (var i = start.month+1; i < end.month; ++i) {
+      total += daysInMonth(end.year,i);
+    }
+    total += end.day;
+  } else {
+    total += end.day - start.day;
+  }
 
-    var total = 0;
-
-    //TODO pick apart the differences and multiply by lengths
-
-    return sign * total;
+  return sign * total;
 }
 
 function normalise_month(fields) {
@@ -107,16 +147,24 @@ module.exports.createFromObject = function createFromObject(object) {
   return new Deglet(object.year, object.month, object.day);
 };
 
+module.exports.createFromISOString = function createFromISOString(s) {
+  var parts = s.split('-');
+  var year = Number(parts[0]);
+  var month = Number(parts[1]);
+  var day = Number(parts[2]);
+  return new Deglet(year, month, day);
+};
+
 Deglet.prototype.daysInMonth = function daysInMonth(year, month) {
   return mdays(year || this.internal.year, month ? month-1 : this.internal.month);
 };
 
 Deglet.prototype.daysInYear = function daysInYear(year) {
-    return ydays(year || this.internal.year);
+  return ydays(year || this.internal.year);
 };
 
 Deglet.prototype.isLeapYear = function isLeapYear(year) {
-    return leap(year || this.internal.year);
+  return leap(year || this.internal.year);
 };
 
 Deglet.prototype.normalise = function normalise() {
