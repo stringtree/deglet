@@ -1,0 +1,26 @@
+Current
+-------
+
+
+Sooner
+------
+get last day of current month
+roman year
+tidy up naming and source code layout for release
+README
+
+Later
+-----
+day of week
+selectable strictness
+selectable month-clipping behaviour
+way of reporting errors in strict mode
+
+
+Maybe
+-----
+wider supported date range
+
+Done
+----
+2016-09-01 create a todo file ;)
